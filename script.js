@@ -1766,132 +1766,192 @@ function searchRecipes(query) {
     return matchingRecipes;
   }
   
+//CREATION DE MES CARD QUI CONTIENNENT MES DONNEES JSON "recipes" mes recettes
+const cardContainer = document.getElementById('card-container');
 
-  //CREATION DE MES CARD QUI CONTIENNENT MES DONNEES JSON "recipes" mes recettes
-  const cardContainer = document.getElementById('card-container');
-  
-  recipes.forEach((recipe) => {
-    const cardCol = document.createElement('div');
-    cardCol.classList.add('col', 'toto');
-    // cardCol.classList.add('toto');
-    cardCol.setAttribute('data-recipe-id', recipe.id);
-  
-    const card = document.createElement('div');
-    card.classList.add('card', 'shadow-sm', 'toto');
-  
-    const cardImage = document.createElement('img');
-    cardImage.classList.add('bd-placeholder-img', 'card-img-top', 'toto');
-    cardImage.src = '../img/limonade-de-coco.jpg';
-    cardImage.style.height = '255px';
-    cardImage.style.width = '100%';
-    cardImage.style.objectFit = 'cover';
-  
-    const cardBody = document.createElement('div');
-    cardBody.classList.add('card-body', 'toto');
-  
-    const cardTitle = document.createElement('h5');
-    cardTitle.classList.add('card-title', 'toto');
-    cardTitle.textContent = recipe.name;
-  
-    const cardText = document.createElement('p');
-    cardText.classList.add('card-text', 'toto');
-    cardText.textContent = recipe.description;
-  
-    const cardButtons = document.createElement('div');
-    cardButtons.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'toto');
-  
-    const smallText = document.createElement('small');
-    smallText.classList.add('text-muted', 'toto');
-    smallText.textContent = `${recipe.time} mins`;
-  
-    cardBody.appendChild(cardTitle);
-    cardBody.appendChild(cardText);
-    cardBody.appendChild(cardButtons);
-    cardBody.appendChild(smallText);
-  
-    card.appendChild(cardImage);
-    card.appendChild(cardBody);
-  
-    cardCol.appendChild(card);
-  
-    cardContainer.appendChild(cardCol);
+recipes.forEach((recipe) => {
+  const cardCol = document.createElement('div');
+  cardCol.classList.add('col');
+  cardCol.setAttribute('data-recipe-id', recipe.id);
+
+  const card = document.createElement('div');
+  card.classList.add('card', 'shadow-sm');
+
+  const cardImage = document.createElement('img');
+  cardImage.classList.add('bd-placeholder-img', 'card-img-top');
+  const imageName = `Recette${recipe.id.toString().padStart(2, '0')}.jpg`; // Génère le nom de l'image en fonction de l'ID de la recette
+  cardImage.src = `../img/${imageName}`; // Utilise le chemin relatif vers le dossier "image" et le nom de l'image généré
+  cardImage.style.height = '255px';
+  cardImage.style.width = '100%';
+  cardImage.style.objectFit = 'cover';
+
+  const cardBody = document.createElement('div');
+  cardBody.classList.add('card-body');
+
+  const cardTitle = document.createElement('h5');
+  cardTitle.classList.add('card-title');
+  cardTitle.textContent = recipe.name;
+
+  const cardText = document.createElement('p');
+  cardText.classList.add('card-text');
+  cardText.textContent = recipe.description;
+
+  const cardDetails = document.createElement('div');
+  cardDetails.classList.add('card-details');
+
+  const servings = document.createElement('p');
+  servings.textContent = `Servings: ${recipe.servings}`;
+
+  const ingredientsList = document.createElement('ul');
+  recipe.ingredients.forEach((ingredientObj) => {
+    const listItem = document.createElement('li');
+    const { ingredient, quantity, unit } = ingredientObj;
+    listItem.textContent = `${quantity || ''} ${unit || ''} ${ingredient}`;
+    ingredientsList.appendChild(listItem);
   });
+
+  cardDetails.appendChild(servings);
+  cardDetails.appendChild(ingredientsList);
+
+  const cardButtons = document.createElement('div');
+  cardButtons.classList.add('d-flex', 'justify-content-between', 'align-items-center');
+
+  const smallText = document.createElement('small');
+  smallText.classList.add('text-muted');
+  smallText.textContent = `${recipe.time} mins`;
+
+  cardBody.appendChild(cardTitle);
+  cardBody.appendChild(cardText);
+  cardBody.appendChild(cardDetails);
+  cardBody.appendChild(cardButtons);
+  cardBody.appendChild(smallText);
+
+  card.appendChild(cardImage);
+  card.appendChild(cardBody);
+
+  cardCol.appendChild(card);
+
+  cardContainer.appendChild(cardCol);
+});
+
+
 
   // NOUVEAU FILTRES
-
-
-const ingredientsDropdown = document.getElementById("ingredients-dropdown");
-const appliancesDropdown = document.getElementById("appliances-dropdown");
-const utensilsDropdown = document.getElementById("utensils-dropdown");
-
-// Fonction pour afficher le nom du filtre sélectionné
-function displaySelectedFilterName(filterElement) {
-  const dropdownToggle = filterElement.closest(".dropdown").querySelector(".dropdown-menu");
-  const selectedFilterName = filterElement.textContent.trim();
-  dropdownToggle.textContent = selectedFilterName;
-}
-
-// Nouveau projet, utiliser l'element html select. a partir de lui en JS lister à l'intérieur de lui que j'ai dans mon fichier JSON
-// boucle forEach qui regarde mes ingrédients
-// Comment fonctionne l'élément select
-
-// Écouteurs d'événements pour les options de filtre
-ingredientsDropdown.addEventListener("click", function (event) {
-  displaySelectedFilterName(event.target);
-});
-
-appliancesDropdown.addEventListener("click", function (event) {
-    console.log('ingredientsDropdown')
-
-  displaySelectedFilterName(event.target);
-});
-
-utensilsDropdown.addEventListener("click", function (event) {
-    console.log('ingredientsDropdown')
-
-  displaySelectedFilterName(event.target);
-});
-
-// Fonction pour créer les options de filtre dans le dropdown-toggle
-function createFilterOptions(filterElement, filterData) {
-  filterData.forEach((item) => {
-    const option = document.createElement("li");
-    const link = document.createElement("a");
-    link.classList.add("dropdown-item");
-    link.href = "#";
-    link.textContent = item;
-    option.appendChild(link);
-    filterElement.appendChild(option);
-  });
-}
-
-// Créer les options de filtre pour les ingrédients
-const ingredients = recipes.reduce((acc, recipe) => {
-  recipe.ingredients.forEach((ingredient) => {
-    if (!acc.includes(ingredient.ingredient)) {
-      acc.push(ingredient.ingredient);
-    }
-  });
-  return acc;
-}, []);
-createFilterOptions(ingredientsDropdown, ingredients);
-
-// Créer les options de filtre pour les appareils
-const appliances = recipes.reduce((acc, recipe) => {
-  if (!acc.includes(recipe.appliance)) {
-    acc.push(recipe.appliance);
+  const ingredientsSelect = document.querySelector('select[aria-label="Ingredients"]');
+  const appliancesSelect = document.querySelector('select[aria-label="Appareils"]');
+  const utensilsSelect = document.querySelector('select[aria-label="Ustensils"]');
+  
+  function createSelectOptions(selectElement, options) {
+    options.forEach((option) => {
+      const newOption = document.createElement("option");
+      newOption.value = option;
+      newOption.textContent = option;
+      selectElement.appendChild(newOption);
+    });
   }
-  return acc;
-}, []);
-createFilterOptions(appliancesDropdown, appliances);
-
-// Créer les options de filtre pour les ustensiles
-const utensils = recipes.reduce((acc, recipe) => {
-  recipe.ustensils.forEach((utensil) => {
-    if (!acc.includes(utensil)) {
-      acc.push(utensil);
+  
+  // Créer les options de filtre pour les ingrédients
+  const ingredients = recipes.reduce((acc, recipe) => {
+    recipe.ingredients.forEach((ingredient) => {
+      if (!acc.includes(ingredient.ingredient)) {
+        acc.push(ingredient.ingredient);
+      }
+    });
+    return acc;
+  }, []);
+  createSelectOptions(ingredientsSelect, ingredients);
+  
+  // Créer les options de filtre pour les appareils
+  const appliances = recipes.reduce((acc, recipe) => {
+    if (!acc.includes(recipe.appliance)) {
+      acc.push(recipe.appliance);
     }
-  });
-  return acc;
-}, []);
-createFilterOptions(utensilsDropdown, utensils);
+    return acc;
+  }, []);
+  createSelectOptions(appliancesSelect, appliances);
+  
+  // Créer les options de filtre pour les ustensiles
+  const utensils = recipes.reduce((acc, recipe) => {
+    recipe.ustensils.forEach((utensil) => {
+      if (!acc.includes(utensil)) {
+        acc.push(utensil);
+      }
+    });
+    return acc;
+  }, []);
+  createSelectOptions(utensilsSelect, utensils);
+  
+  
+// const ingredientsDropdown = document.getElementById("ingredients-dropdown");
+// const appliancesDropdown = document.getElementById("appliances-dropdown");
+// const utensilsDropdown = document.getElementById("utensils-dropdown");
+
+// // Fonction pour afficher le nom du filtre sélectionné
+// function displaySelectedFilterName(filterElement) {
+//   const dropdownToggle = filterElement.closest(".dropdown").querySelector(".dropdown-menu");
+//   const selectedFilterName = filterElement.textContent.trim();
+//   dropdownToggle.textContent = selectedFilterName;
+// }
+
+
+
+// // Écouteurs d'événements pour les options de filtre
+// ingredientsDropdown.addEventListener("click", function (event) {
+//   displaySelectedFilterName(event.target);
+// });
+
+// appliancesDropdown.addEventListener("click", function (event) {
+//     console.log('ingredientsDropdown')
+
+//   displaySelectedFilterName(event.target);
+// });
+
+// utensilsDropdown.addEventListener("click", function (event) {
+//     console.log('ingredientsDropdown')
+
+//   displaySelectedFilterName(event.target);
+// });
+
+// // Fonction pour créer les options de filtre dans le dropdown-toggle
+// function createFilterOptions(filterElement, filterData) {
+//   filterData.forEach((item) => {
+//     const option = document.createElement("li");
+//     const link = document.createElement("a");
+//     link.classList.add("dropdown-item");
+//     link.href = "#";
+//     link.textContent = item;
+//     option.appendChild(link);
+//     filterElement.appendChild(option);
+//   });
+// }
+
+// // Créer les options de filtre pour les ingrédients
+// const ingredients = recipes.reduce((acc, recipe) => {
+//   recipe.ingredients.forEach((ingredient) => {
+//     if (!acc.includes(ingredient.ingredient)) {
+//       acc.push(ingredient.ingredient);
+//     }
+//   });
+//   return acc;
+// }, []);
+// createFilterOptions(ingredientsDropdown, ingredients);
+
+// // Créer les options de filtre pour les appareils
+// const appliances = recipes.reduce((acc, recipe) => {
+//   if (!acc.includes(recipe.appliance)) {
+//     acc.push(recipe.appliance);
+//   }
+//   return acc;
+// }, []);
+// createFilterOptions(appliancesDropdown, appliances);
+
+// // Créer les options de filtre pour les ustensiles
+// const utensils = recipes.reduce((acc, recipe) => {
+//   recipe.ustensils.forEach((utensil) => {
+//     if (!acc.includes(utensil)) {
+//       acc.push(utensil);
+//     }
+//   });
+//   return acc;
+// }, []);
+// createFilterOptions(utensilsDropdown, utensils);

@@ -1,3 +1,15 @@
+body {
+  font-family: 'Manrope', sans-serif;
+}
+
+.bg-light {
+  color: #ededed;
+}
+
+.font-anton {
+  font-family: 'Anton', sans-serif;
+}
+
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
