@@ -1724,20 +1724,17 @@ const recipes = [
         "ustensils":["rouleau à patisserie","fouet"]
     }
   ];
-
-  const searchInput = document.getElementById("search-input");
-
-searchInput.addEventListener("input", function() {
-  const inputValue = searchInput.value;
-  const matchingRecipes = searchRecipes(inputValue);
-  console.log(matchingRecipes);
-});
-
-function searchRecipes(query) {
+  // FUNCTION ALGO DE RECHERCHE DE MES RECETTES
+  function searchRecipes(query) {
     query = query.toLowerCase();
-    const matchingRecipes = [];
-    
+    const results = []; // Tableau pour stocker les recettes correspondantes à la recherche
+    const matchingRecipes = []; // Tableau pour stocker les identifiants des recettes correspondant au nom de recherche
+  
     recipes.forEach((recipe) => {
+      if (recipe.name.toLowerCase().includes(query)) {
+        matchingRecipes.push(recipe.id); // Si le nom de la recette correspond à la recherche, ajouter son identifiant à matchingRecipes
+      }
+  
       const { name, ingredients, appliance, ustensils } = recipe;
   
       if (
@@ -1749,24 +1746,30 @@ function searchRecipes(query) {
         appliance.toLowerCase().includes(query) ||
         ustensils.some((ustensil) => ustensil.toLowerCase().includes(query))
       ) {
-        matchingRecipes.push(recipe.id);
+        results.push(recipe); // Si la recette correspond à la recherche (nom, ingrédients, appareil ou ustensiles), ajouter la recette à results
       }
     });
   
     const cardContainers = document.querySelectorAll('#card-container .col');
     cardContainers.forEach((cardContainer) => {
       const recipeId = parseInt(cardContainer.getAttribute('data-recipe-id'));
-      if (matchingRecipes.includes(recipeId)) {
-        cardContainer.style.display = 'block'; // Afficher les cartes correspondant à la recherche
-      } else {
-        cardContainer.style.display = 'none'; // Masquer les cartes qui ne correspondent pas à la recherche
+      if (!matchingRecipes.includes(recipeId)) {
+        cardContainer.style.display = 'none'; // Masquer les cartes qui ne correspondent pas à la recherche en utilisant display: none;
       }
     });
   
-    return matchingRecipes;
+    return results; // Retourner les résultats de recherche
   }
   
-
+  //INPUT DE RECHERCHE
+  const searchButton = document.getElementById("search-button");
+  
+  searchButton.addEventListener("click", function() {
+    const inputValue = document.getElementById("search-input").value;
+    const matchingRecipes = searchRecipes(inputValue); // Appeler la fonction searchRecipes avec la valeur de recherche saisie
+    console.log(matchingRecipes); // Afficher les résultats de recherche dans la console
+  });
+  
   //CREATION DE MES CARD QUI CONTIENNENT MES DONNEES JSON "recipes" mes recettes
   const cardContainer = document.getElementById('card-container');
   
@@ -1826,14 +1829,10 @@ const utensilsDropdown = document.getElementById("utensils-dropdown");
 
 // Fonction pour afficher le nom du filtre sélectionné
 function displaySelectedFilterName(filterElement) {
-  const dropdownToggle = filterElement.closest(".dropdown").querySelector(".dropdown-menu");
+  const dropdownToggle = filterElement.closest(".dropdown").querySelector(".dropdown-toggle");
   const selectedFilterName = filterElement.textContent.trim();
   dropdownToggle.textContent = selectedFilterName;
 }
-
-// Nouveau projet, utiliser l'element html select. a partir de lui en JS lister à l'intérieur de lui que j'ai dans mon fichier JSON
-// boucle forEach qui regarde mes ingrédients
-// Comment fonctionne l'élément select
 
 // Écouteurs d'événements pour les options de filtre
 ingredientsDropdown.addEventListener("click", function (event) {
@@ -1841,14 +1840,10 @@ ingredientsDropdown.addEventListener("click", function (event) {
 });
 
 appliancesDropdown.addEventListener("click", function (event) {
-    console.log('ingredientsDropdown')
-
   displaySelectedFilterName(event.target);
 });
 
 utensilsDropdown.addEventListener("click", function (event) {
-    console.log('ingredientsDropdown')
-
   displaySelectedFilterName(event.target);
 });
 

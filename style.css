@@ -24,3 +24,7 @@
     width: 100%;
     object-fit: cover;
 }
+
+.toto {
+    border: solid 6px red;
+}
