@@ -10,10 +10,16 @@
     />
     <meta name="generator" content="Hugo 0.72.0" />
     <title>Les petits plats</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <link rel="stylesheet" href="style.css" />
 
@@ -51,7 +57,7 @@
         </a>
         <section class="w-50 py-5 text-center container">
           <h1 class="font-anton mb-3 h2" style="color: #ffd15b">
-            CHERCHEZ PARMI PLUS DE 1500 RECETTES<br>DU QUOTIDIEN, SIMPLES ET
+            CHERCHEZ PARMI PLUS DE 1500 RECETTES<br />DU QUOTIDIEN, SIMPLES ET
             DÉLICIEUSES
           </h1>
         </section>
@@ -74,16 +80,21 @@
     <main>
       <!-- input .value  -->
 
-      <div class="container">
-        <select class="form-select" aria-label="Ingredients">
-          <option selected>Ingredients</option>
-        </select>
-        <select class="form-select" aria-label="Appareils">
-          <option selected>Appareils</option>
-        </select>
-        <select class="form-select" aria-label="Ustensils">
-          <option selected>Ustensils</option>
-        </select>
+      <div class="container py-5 bg-light">
+        <div class="dropdown">
+          <div class="dropdown-arrow dropdown-toggle" onclick="toggleDropdown(this)">
+            Ingrédients
+            <span class="chevron"></span>
+          </div>
+          <div class="dropdown-content">
+            <input type="text" class="search-input-dropdown" placeholder="Recherche" />
+            <ul class="dropdown-list" id="ingredients">
+              <li>Ingredient 1</li>
+              <li>Ingredient 2</li>
+              <li>Ingredient 3</li>
+            </ul>
+          </div>
+        </div>               
       </div>
 
       <div class="album py-5 bg-light">

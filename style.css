@@ -40,3 +40,56 @@ body {
 .toto {
     border: solid 6px red;
 }
+
+.dropdown {
+  position: relative;
+  height: 56px;
+  width: 195px;
+  border-radius: 11px;
+  background-color: white;
+}
+
+.dropdown-arrow {
+  position: relative;
+  padding: 17px 16px;
+  background-color: white;
+  color: black;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  padding: 17px 16px;
+  background-color: white;
+  color: black;
+}
+
+.dropdown-content.show {
+  display: block;
+}
+
+.dropdown-arrow::after {
+  visibility: hidden;
+}
+
+.dropdown-arrow .chevron::before {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  border-style: solid;
+  border-width: 0.15em 0.15em 0 0;
+  transform: translateY(50%) rotate(135deg);
+  margin-left: 0.25em;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.opened .chevron::before {
+  transform: translateY(50%) rotate(-45deg);
+}
+
+
+
+

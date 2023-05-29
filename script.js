@@ -1836,6 +1836,42 @@ recipes.forEach((recipe) => {
 
 
 
+// DROP DOWN
+// Récupérer les éléments du DOM
+const dropdownContent = document.querySelector('.dropdown-content');
+const dropdownArrow = document.querySelector('.dropdown-arrow');
+
+// Fonction pour afficher ou masquer le contenu du dropdown
+function toggleDropdown() {
+  dropdownContent.classList.toggle('show');
+  dropdownArrow.classList.toggle('opened');
+}
+
+// Événement pour filtrer la liste au fur et à mesure que l'utilisateur tape dans le champ de recherche
+const searchInputDropdown = document.querySelector('.search-input-dropdown');
+const dropdownList = document.querySelector('.dropdown-list');
+
+function filterList() {
+  const searchValue = searchInputDropdown.value.toLowerCase();
+  const items = Array.from(dropdownList.getElementsByTagName('li'));
+
+  items.forEach(function(item) {
+    const text = item.innerText.toLowerCase();
+    if (text.includes(searchValue)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+searchInputDropdown.addEventListener('input', filterList);
+
+
+
+
+
+
   // NOUVEAU FILTRES
   const ingredientsSelect = document.querySelector('select[aria-label="Ingredients"]');
   const appliancesSelect = document.querySelector('select[aria-label="Appareils"]');
