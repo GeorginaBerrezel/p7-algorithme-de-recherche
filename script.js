@@ -1833,58 +1833,64 @@ recipes.forEach((recipe) => {
 
   cardContainer.appendChild(cardCol);
 });
-
-
-
 // DROP DOWN
-// Récupérer les éléments du DOM
-const dropdownContent = document.querySelector('.dropdown-content');
-const dropdownArrow = document.querySelector('.dropdown-arrow');
-
 // Fonction pour afficher ou masquer le contenu du dropdown
-function toggleDropdown() {
-  dropdownContent.classList.toggle('show');
-  dropdownArrow.classList.toggle('opened');
-}
-
-// Événement pour filtrer la liste au fur et à mesure que l'utilisateur tape dans le champ de recherche
-const searchInputDropdown = document.querySelector('.search-input-dropdown');
-const dropdownList = document.querySelector('.dropdown-list');
-
-function filterList() {
-  const searchValue = searchInputDropdown.value.toLowerCase();
-  const items = Array.from(dropdownList.getElementsByTagName('li'));
-
-  items.forEach(function(item) {
-    const text = item.innerText.toLowerCase();
-    if (text.includes(searchValue)) {
-      item.style.display = 'block';
-    } else {
-      item.style.display = 'none';
-    }
-  });
-}
-
-searchInputDropdown.addEventListener('input', filterList);
-
-
-
-
-
-
-  // NOUVEAU FILTRES
-  const ingredientsSelect = document.querySelector('select[aria-label="Ingredients"]');
-  const appliancesSelect = document.querySelector('select[aria-label="Appareils"]');
-  const utensilsSelect = document.querySelector('select[aria-label="Ustensils"]');
+function toggleDropdown(dropdown) {
+    const dropdownContent = dropdown.querySelector('.dropdown-content');
+    const dropdownArrow = dropdown.querySelector('.dropdown-arrow');
+    dropdownContent.classList.toggle('show');
+    dropdownArrow.classList.toggle('opened');
   
+    // Ajout d'un ajustement pour recalculer la hauteur maximale du contenu scrollable
+    if (dropdownContent.classList.contains('show')) {
+      const dropdownListScrollable = dropdownContent.querySelector('.dropdown-list-scrollable');
+      const maxHeight = window.innerHeight - dropdownContent.getBoundingClientRect().top - 20; // Ajustez la marge en conséquence
+      dropdownListScrollable.style.maxHeight = maxHeight + 'px';
+    }
+  }
+  
+  // Événement pour filtrer la liste au fur et à mesure que l'utilisateur tape dans le champ de recherche
+  function filterList() {
+    const dropdown = this.parentNode.parentNode;
+    const searchInputDropdown = dropdown.querySelector('.search-input-dropdown');
+    const dropdownList = dropdown.querySelector('.dropdown-list');
+    const searchValue = searchInputDropdown.value.toLowerCase();
+    const items = Array.from(dropdownList.getElementsByTagName('li'));
+  
+    items.forEach(function(item) {
+      const text = item.innerText.toLowerCase();
+      if (text.includes(searchValue)) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+  
+  const searchInputDropdowns = document.querySelectorAll('.search-input-dropdown');
+  searchInputDropdowns.forEach(function(input) {
+    input.addEventListener('input', filterList);
+  });
+  
+  
+  // Fonction pour créer les options de filtre
   function createSelectOptions(selectElement, options) {
+    selectElement.innerHTML = ''; // Effacer les éléments existants
+  
     options.forEach((option) => {
-      const newOption = document.createElement("option");
-      newOption.value = option;
+      const newOption = document.createElement("li");
       newOption.textContent = option;
+      newOption.addEventListener('click', function() {
+        addTag(option, selectElement.id);
+      });
       selectElement.appendChild(newOption);
     });
   }
+  
+  // Récupérer les éléments <ul> correspondants
+  const ingredientsList = document.querySelector('#ingredients');
+  const appliancesList = document.querySelector('#appareils');
+  const utensilsList = document.querySelector('#ustensils');
   
   // Créer les options de filtre pour les ingrédients
   const ingredients = recipes.reduce((acc, recipe) => {
@@ -1895,7 +1901,7 @@ searchInputDropdown.addEventListener('input', filterList);
     });
     return acc;
   }, []);
-  createSelectOptions(ingredientsSelect, ingredients);
+  createSelectOptions(ingredientsList, ingredients);
   
   // Créer les options de filtre pour les appareils
   const appliances = recipes.reduce((acc, recipe) => {
@@ -1904,7 +1910,7 @@ searchInputDropdown.addEventListener('input', filterList);
     }
     return acc;
   }, []);
-  createSelectOptions(appliancesSelect, appliances);
+  createSelectOptions(appliancesList, appliances);
   
   // Créer les options de filtre pour les ustensiles
   const utensils = recipes.reduce((acc, recipe) => {
@@ -1915,7 +1921,53 @@ searchInputDropdown.addEventListener('input', filterList);
     });
     return acc;
   }, []);
-  createSelectOptions(utensilsSelect, utensils);
+  createSelectOptions(utensilsList, utensils);
+  
+  
+  // Fonction pour ajouter un tag
+  function addTag(tagText, dropdownId) {
+    const tagsContainer = document.querySelector('#tags-container');
+  
+    // Créer l'élément du tag
+    const tag = document.createElement('div');
+    tag.classList.add('tag');
+  
+    // Ajouter le texte du tag
+    const tagTextElement = document.createElement('span');
+    tagTextElement.textContent = tagText;
+    tag.appendChild(tagTextElement);
+  
+    // Ajouter le bouton de suppression du tag
+    const closeButton = document.createElement('span');
+    closeButton.classList.add('close-button');
+    closeButton.innerHTML = '&times;';
+    closeButton.addEventListener('click', function() {
+      removeTag(tag);
+    });
+    tag.appendChild(closeButton);
+  
+    // Ajouter une classe au tag en fonction du dropdown d'origine
+    tag.classList.add(dropdownId);
+  
+    // Ajouter le tag à la liste des tags
+    tagsContainer.appendChild(tag);
+  
+    // Réinitialiser le champ de recherche du dropdown correspondant
+    const dropdown = document.querySelector(`#${dropdownId}`);
+    const searchInputDropdown = dropdown.querySelector('.search-input-dropdown');
+    searchInputDropdown.value = '';
+  
+    // Masquer le contenu du dropdown
+    toggleDropdown(dropdown);
+  }
+  
+  // Fonction pour supprimer un tag
+  function removeTag(tag) {
+    const tagsContainer = document.querySelector('#tags-container');
+    tagsContainer.removeChild(tag);
+  }
+  
+  
   
   
 // const ingredientsDropdown = document.getElementById("ingredients-dropdown");
