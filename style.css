@@ -1,5 +1,5 @@
 body {
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope', sans-serif !important;
 }
 
 .bg-light {
@@ -31,6 +31,19 @@ body {
     align-items: center;
 }
 
+.card-title {
+  font-family: 'Anton';
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27px;
+}
+
+.card-text {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19px;  
+}
+
 .card-img-top img {
     height: 255px;
     width: 100%;
@@ -51,29 +64,37 @@ body {
 }
 
 .ingredient-name {
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 19px;
 }
 
 .ingredient-details {
-  font-weight: lighter;
-  color: #888;
+  font-weight: 400;
+  color: #7A7A7A;
+  font-size: 14px;
 }
 
 
 .ingredients-list {
   columns: 2;
   column-gap: 20px;
+  padding: 0;
 }
 
 .ingredients-list li {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
   list-style-type: none;
-  padding: 0 0 0.5rem 0;
+  padding: 0 0 1rem 0;
   margin: 0;
 }
 
 .toto {
     border: solid 6px red;
 }
+
 .dropdown {
   position: relative;
   height: 56px;
@@ -84,6 +105,9 @@ body {
 }
 
 .dropdown-arrow {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
   position: relative;
   padding: 17px 16px;
   background-color: white;
@@ -158,6 +182,10 @@ body {
   overflow-y: auto;
 }
 
+.dropdown-list {
+  padding: 0;
+}
+
 .dropdown-list ul{
   padding: 0 !important;
   margin: 0 !important;
@@ -168,7 +196,7 @@ body {
   cursor: pointer;
 }
 
-.dropdown-list:hover {
+.dropdown-list li:hover {
   background-color: #FFD15B;
 }
 
