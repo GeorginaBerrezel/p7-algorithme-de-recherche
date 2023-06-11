@@ -70,7 +70,7 @@
               placeholder="Rechercher une recette"
             />
             <button class="btn btn-light" id="search-button" type="button">
-              <img src="./icons/loop-cta-black.svg" alt="Icône de recherche">
+              <img src="./icons/loop-cta-black.svg" alt="Icône de recherche" />
             </button>
           </div>
         </section>
@@ -83,14 +83,24 @@
       <div class="album py-5 bg-light">
         <div class="container d-flex">
           <div class="dropdown">
-            <div class="dropdown-arrow dropdown-toggle" onclick="toggleDropdown(this.parentNode)">
+            <div
+              class="dropdown-arrow dropdown-toggle" id="arrow1"
+            >
               Ingrédients
               <span class="chevron"></span>
             </div>
-            <div class="dropdown-content">
+            <div class="dropdown-content" id="dropdown-content">
               <div class="search-input-container">
-                <input type="text" class="search-input-dropdown" placeholder="Recherche" />
-                <img src="./icons/loop-cta.svg" class="search-icon" alt="Icône de recherche">
+                <input
+                  type="text"
+                  class="search-input-dropdown"
+                  placeholder="Recherche"
+                />
+                <img
+                  src="./icons/loop-cta.svg"
+                  class="search-icon"
+                  alt="Icône de recherche"
+                />
               </div>
               <div class="dropdown-list-scrollable">
                 <ul class="dropdown-list" id="ingredients">
@@ -100,14 +110,24 @@
             </div>
           </div>
           <div class="dropdown">
-            <div class="dropdown-arrow dropdown-toggle" onclick="toggleDropdown(this.parentNode)">
+            <div
+              class="dropdown-arrow dropdown-toggle" id="arrow2"
+            >
               Appareils
               <span class="chevron"></span>
             </div>
-            <div class="dropdown-content">
+            <div class="dropdown-content" id="dropdown-content">
               <div class="search-input-container">
-                <input type="text" class="search-input-dropdown" placeholder="Recherche" />
-                <img src="./icons/loop-cta.svg" class="search-icon" alt="Icône de recherche">
+                <input
+                  type="text"
+                  class="search-input-dropdown"
+                  placeholder="Recherche"
+                />
+                <img
+                  src="./icons/loop-cta.svg"
+                  class="search-icon"
+                  alt="Icône de recherche"
+                />
               </div>
               <div class="dropdown-list-scrollable">
                 <ul class="dropdown-list" id="appareils">
@@ -117,14 +137,24 @@
             </div>
           </div>
           <div class="dropdown">
-            <div class="dropdown-arrow dropdown-toggle" onclick="toggleDropdown(this.parentNode)">
+            <div
+              class="dropdown-arrow dropdown-toggle" id="arrow3"
+            >
               Ustensiles
               <span class="chevron"></span>
             </div>
-            <div class="dropdown-content">
+            <div class="dropdown-content" id="dropdown-content">
               <div class="search-input-container">
-                <input type="text" class="search-input-dropdown" placeholder="Recherche" />
-                <img src="./icons/loop-cta.svg" class="search-icon" alt="Icône de recherche">
+                <input
+                  type="text"
+                  class="search-input-dropdown"
+                  placeholder="Recherche"
+                />
+                <img
+                  src="./icons/loop-cta.svg"
+                  class="search-icon"
+                  alt="Icône de recherche"
+                />
               </div>
               <div class="dropdown-list-scrollable">
                 <ul class="dropdown-list" id="ustensils">
@@ -133,14 +163,13 @@
               </div>
             </div>
           </div>
-          
 
-    
           <div class="container d-flex justify-content-end">
-            <div class="search-counter font-anton m-3" style="color: #000000"></div>
+            <div
+              class="search-counter font-anton m-3"
+              style="color: #000000"
+            ></div>
           </div>
-          
-          
         </div>
         <div class="container"><div id="tags-container"></div></div>
       </div>
