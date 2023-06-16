@@ -35,6 +35,7 @@ fetchRecipes()
 
       // constante  dropdownContent dans laquel mon parametre doropdown va chercher la class .dropdown-content
       const dropdownContent = document.getElementById("dropdown-content");
+      // faire une boucle sur dropdown content qui sera un tableau
       console.log(dropdownContent);
       // constante  dropdownArrow dans laquel mon parametre doropdown va chercher la class .dropdown-arrow
       const dropdownArrow1 = document.getElementById("arrow1");
@@ -174,6 +175,7 @@ fetchRecipes()
 
       const tagTextElement = document.createElement("span");
       tagTextElement.textContent = tagText;
+      tagTextElement.classList.add("content");
       tag.appendChild(tagTextElement);
 
       const closeButton = document.createElement("span");
@@ -208,19 +210,23 @@ fetchRecipes()
 
     function filterRecipesByTags() {
       const selectedTags = Array.from(
-        document.querySelectorAll("#tags-container .tag")
+        document.querySelectorAll("#tags-container .tag .content")
       );
+      console.log(selectedTags);
       const selectedIngredients = [];
       const selectedAppliances = [];
       const selectedUtensils = [];
 
       selectedTags.forEach((tag) => {
         const tagName = tag.textContent.toLowerCase();
-        if (tag.classList.contains("ingredients")) {
+        console.log(tag.parentNode.classList);
+        console.log(tagName);
+        if (tag.parentNode.classList.contains("ingredients")) {
+          console.log('toto');
           selectedIngredients.push(tagName);
-        } else if (tag.classList.contains("appareils")) {
+        } else if (tag.parentNode.classList.contains("appareils")) {
           selectedAppliances.push(tagName);
-        } else if (tag.classList.contains("ustensils")) {
+        } else if (tag.parentNode.classList.contains("ustensils")) {
           selectedUtensils.push(tagName);
         }
       });
@@ -236,12 +242,26 @@ fetchRecipes()
           selectedAppliances,
           selectedUtensils
         );
+      
 
         if (cardContainer) {
           cardContainer.style.display = shouldDisplay ? "block" : "none";
         }
       });
     }
+/////
+    function verifierPresence(selectedTagsText, recipeContent) {
+      console.log(selectedTagsText);
+      console.log(recipeContent);
+
+      for (let i = 0; i < selectedTagsText.length; i++) {
+        if (!recipeContent.includes(selectedTagsText[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+//////
 
     function checkRecipeTags(
       recipe,
@@ -249,19 +269,16 @@ fetchRecipes()
       selectedAppliances,
       selectedUtensils
     ) {
+      console.log('checkRecipeTags');
       const { ingredients, appliance, ustensils } = recipe;
 
       if (selectedIngredients.length > 0) {
         const recipeIngredients = ingredients.map((ingredient) =>
           ingredient.ingredient.toLowerCase()
         );
-        const hasAllIngredients = selectedIngredients.every((ingredient) =>
-          recipeIngredients.includes(ingredient)
-        );
-
-        if (!hasAllIngredients) {
-          return false;
-        }
+        console.log(selectedIngredients);
+        console.log(verifierPresence(selectedIngredients,recipeIngredients));
+        return verifierPresence(selectedIngredients,recipeIngredients);
       }
 
       if (
@@ -293,3 +310,7 @@ fetchRecipes()
       error
     );
   });
+
+  // variable resultat qui stock celui des mon input ou tag 
+
+  // recuperer les tags qui a dans les recettes restantent
