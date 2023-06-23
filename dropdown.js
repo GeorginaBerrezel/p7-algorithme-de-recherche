@@ -1,110 +1,137 @@
 import { fetchRecipes } from "./data.js";
 
-// function clickDropdown() {
-//   const result = console.log("j'ai clické");
-//   return result;
-// }
-
-// const toto = document.querySelectorAll(".dropdown");
-// toto.addEventListener("click", myFunctionClick);
-
-// function myFunctionClick() {
-//   console.log("j'ai clické");
-// }
-
 fetchRecipes()
   .then((recipes) => {
     console.log(recipes);
 
-    const dropdown = document.querySelector(".dropdown");
+    const dropdowns = document.querySelectorAll(".dropdown");
 
-    dropdown.addEventListener("click", toggleDropdown);
-
-    // function toggleDropdown() {
-    //   console.log("j'ai clické");
-    // }
-
-    function filterList() {
-      // Code de filtrage du dropdown
-      // Utilisez les données des recettes (variable "recipes") ici
-    }
-
-    // Fonction "toggleDropdown" à comme parametre dropdown
-    function toggleDropdown(dropdown) {
-      console.log("j'ai clické");
-
-      // constante  dropdownContent dans laquel mon parametre doropdown va chercher la class .dropdown-content
-      const dropdownContent = document.getElementById("dropdown-content");
-      // faire une boucle sur dropdown content qui sera un tableau
-      console.log(dropdownContent);
-      // constante  dropdownArrow dans laquel mon parametre doropdown va chercher la class .dropdown-arrow
-      const dropdownArrow1 = document.getElementById("arrow1");
-      const dropdownArrow2 = document.getElementById("arrow2");
-      const dropdownArrow3 = document.getElementById("arrow3");
-      // J'ajoute  une class show à dropdownContent
-      dropdownContent.classList.toggle("show");
-      // J'ajoute  une class opened à dropdownArrow
-      dropdownArrow1.classList.toggle("opened");
-      dropdownArrow2.classList.toggle("opened");
-
-      dropdownArrow3.classList.toggle("opened");
-
-      // si ma class.dropdown-content à la class show
-      if (dropdownContent.classList.contains("show")) {
-        //ALORS
-        const dropdownListScrollable = dropdownContent.querySelector(
-          ".dropdown-list-scrollable"
-        );
-        const maxHeight =
-          window.innerHeight - dropdownContent.getBoundingClientRect().top - 20;
+    dropdowns.forEach((dropdown) => {
+      dropdown.addEventListener("click", toggleDropdown);
+    });
+    
+    function toggleDropdown(event) {
+      console.log("J'ai cliqué");
+    
+      const dropdown = event.currentTarget;
+      const dropdownContent = dropdown?.querySelector(".dropdown-content");
+      const dropdownArrows = dropdown?.querySelectorAll(".dropdown-arrow");
+    
+      if (dropdownContent) {
+        dropdownContent.classList.toggle("show");
+      }
+    
+      if (dropdownArrows) {
+        dropdownArrows.forEach((arrow) => {
+          arrow.classList.toggle("opened");
+        });
+      }
+    
+      if (dropdownContent?.classList.contains("show")) {
+        const dropdownListScrollable = dropdownContent.querySelector(".dropdown-list-scrollable");
+        const maxHeight = window.innerHeight - dropdownContent.getBoundingClientRect().top - 20;
         dropdownListScrollable.style.maxHeight = maxHeight + "px";
       }
     }
+    
+    
 
-    function filterList() {
-      const dropdown = this.parentNode.parentNode;
-      const searchInputDropdown = dropdown.querySelector(
-        ".search-input-dropdown"
-      );
-      const dropdownList = dropdown.querySelector(".dropdown-list");
-      const searchValue = searchInputDropdown.value.toLowerCase();
-      const items = Array.from(dropdownList.getElementsByTagName("li"));
-      const selectedTags = getSelectedTags();
+    function filterRecipes() {
+      console.log('je passe dans ma fonction filterRecipes');
+      const dropdowns = document.querySelectorAll(".dropdown");
 
-      items.forEach(function (item) {
-        const text = item.innerText.toLowerCase();
-        if (text.includes(searchValue)) {
-          item.style.display = "block";
-        } else {
-          item.style.display = "none";
-        }
-      });
+      dropdowns.forEach((dropdown) => {
+        const dropdownContent = dropdown.querySelector(".dropdown-content");
+        const searchInputDropdown = dropdown.querySelector(
+          ".search-input-dropdown"
+        );
+        const dropdownList = dropdown.querySelector(".dropdown-list");
+        const searchValue = searchInputDropdown.value.toLowerCase();
+        const items = Array.from(dropdownList.getElementsByTagName("li"));
 
-      const query = searchValue.trim();
-      const matchingRecipes = searchRecipes(query);
-      const cardContainers = document.querySelectorAll("#card-container .col");
+        items.forEach(function (item) {
+          const text = item.innerText.toLowerCase();
+          if (text.includes(searchValue)) {
+            item.style.display = "block";
+          } else {
+            item.style.display = "none";
+          }
+        });
 
-      cardContainers.forEach((cardContainer) => {
-        const recipeId = parseInt(cardContainer.getAttribute("data-recipe-id"));
-        const cardTags = getTagsForRecipe(recipeId);
+        const query = searchValue.trim();
+        const matchingRecipes = searchRecipes(query);
+        const cardContainers = document.querySelectorAll("#card-container .col");
 
-        if (
-          matchingRecipes.includes(recipeId) &&
-          hasAllSelectedTags(cardTags, selectedTags)
-        ) {
-          cardContainer.style.display = "block";
-        } else {
-          cardContainer.style.display = "none";
-        }
+        cardContainers.forEach((cardContainer) => {
+          const recipeId = parseInt(cardContainer.getAttribute("data-recipe-id"));
+          const cardTags = getTagsForRecipe(recipeId);
+
+          if (
+            matchingRecipes.includes(recipeId) &&
+            hasAllSelectedTags(cardTags, getSelectedTags())
+          ) {
+            cardContainer.style.display = "block";
+          } else {
+            cardContainer.style.display = "none";
+          }
+        });
       });
     }
 
-    const searchInputDropdowns = document.querySelectorAll(
-      ".search-input-dropdown"
-    );
-    searchInputDropdowns.forEach(function (input) {
-      input.addEventListener("input", filterList);
+    const searchInputDropdowns = document.querySelectorAll(".search-input-dropdown");
+    searchInputDropdowns.forEach((input) => {
+      input.addEventListener("input", filterRecipes);
     });
+
+    function getSelectedTags() {
+      console.log(getSelectedTags);
+      const selectedTags = Array.from(
+        document.querySelectorAll("#tags-container .tag .content")
+      ).map((tag) => tag.innerText.toLowerCase());
+      return selectedTags;
+    }
+
+    function getTagsForRecipe(recipeId) {
+      const recipe = recipes.find((recipe) => recipe.id === recipeId);
+      if (recipe) {
+        const { ingredients, appliance, ustensils } = recipe;
+        const tags = [
+          appliance.toLowerCase(),
+          ...ingredients.map((ingredient) =>
+            ingredient.ingredient.toLowerCase()
+          ),
+          ...ustensils.map((utensil) => utensil.toLowerCase()),
+        ];
+        return tags;
+      }
+      return [];
+    }
+
+    function hasAllSelectedTags(cardTags, selectedTags) {
+      return selectedTags.every((tag) => cardTags.includes(tag));
+    }
+
+    function searchRecipes(query) {
+      const matchingRecipes = recipes.reduce((acc, recipe) => {
+        const { name, description, ingredients, appliance, ustensils } = recipe;
+        const recipeTags = [
+          name.toLowerCase(),
+          description.toLowerCase(),
+          appliance.toLowerCase(),
+          ...ingredients.map((ingredient) =>
+            ingredient.ingredient.toLowerCase()
+          ),
+          ...ustensils.map((utensil) => utensil.toLowerCase()),
+        ];
+
+        if (recipeTags.some((tag) => tag.includes(query))) {
+          acc.push(recipe.id);
+        }
+        return acc;
+      }, []);
+
+      return matchingRecipes;
+    }
 
     function createSelectOptions(selectElement, options) {
       selectElement.innerHTML = "";
@@ -151,23 +178,10 @@ fetchRecipes()
     }, []);
     createSelectOptions(utensilsList, utensils);
 
-    function getSelectedTags() {
-      const selectedTags = Array.from(
-        document.querySelectorAll(".tag-item.selected")
-      ).map((tag) => tag.innerText.toLowerCase());
-      return selectedTags;
-    }
-
-    function getTagsForRecipe(recipeId) {
-      // Code pour récupérer les tags associés à une recette à partir de son ID
-      // Retourne un tableau de tags
-    }
-
-    function hasAllSelectedTags(cardTags, selectedTags) {
-      return selectedTags.every((tag) => cardTags.includes(tag));
-    }
 
     function addTag(tagText, dropdownId) {
+      console.log('je passe dans ma fonction addTag')
+
       const tagsContainer = document.querySelector("#tags-container");
 
       const tag = document.createElement("div");
@@ -193,7 +207,7 @@ fetchRecipes()
 
       tagsContainer.appendChild(tag);
 
-      toggleDropdown(dropdown);
+      toggleDropdown();
 
       filterRecipesByTags();
     }
@@ -242,15 +256,15 @@ fetchRecipes()
           selectedAppliances,
           selectedUtensils
         );
-      
 
         if (cardContainer) {
           cardContainer.style.display = shouldDisplay ? "block" : "none";
         }
       });
     }
-/////
+
     function verifierPresence(selectedTagsText, recipeContent) {
+      console.log('je passe dans ma fonction verifierPresence');
       console.log(selectedTagsText);
       console.log(recipeContent);
 
@@ -261,7 +275,6 @@ fetchRecipes()
       }
       return true;
     }
-//////
 
     function checkRecipeTags(
       recipe,
@@ -277,8 +290,8 @@ fetchRecipes()
           ingredient.ingredient.toLowerCase()
         );
         console.log(selectedIngredients);
-        console.log(verifierPresence(selectedIngredients,recipeIngredients));
-        return verifierPresence(selectedIngredients,recipeIngredients);
+        console.log(verifierPresence(selectedIngredients, recipeIngredients));
+        return verifierPresence(selectedIngredients, recipeIngredients);
       }
 
       if (
@@ -303,6 +316,20 @@ fetchRecipes()
 
       return true;
     }
+
+    // Le bloc de code suivant est ajouté ici pour compléter le script
+
+    fetchRecipes()
+      .then(() => {
+        // Le reste du code de votre gestionnaire d'erreur ici
+      })
+      .catch((error) => {
+        console.log(
+          "Une erreur s'est produite lors de la récupération des recettes :",
+          error
+        );
+      });
+
   })
   .catch((error) => {
     console.log(
@@ -310,7 +337,3 @@ fetchRecipes()
       error
     );
   });
-
-  // variable resultat qui stock celui des mon input ou tag 
-
-  // recuperer les tags qui a dans les recettes restantent
