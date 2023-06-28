@@ -2,40 +2,44 @@ import { fetchRecipes } from "./data.js";
 
 fetchRecipes()
   .then((recipes) => {
+    // Affichage de toutes mes recettes
     console.log(recipes);
-
+    // Selection de toutes mes class .dropdown
     const dropdowns = document.querySelectorAll(".dropdown");
-
+    // Boucle sur chacun de mes dropdown via ma constante dropdownS
+    // J'ajoute un écouteur d'evenement pour activer le toggle de mon dropdown
     dropdowns.forEach((dropdown) => {
       dropdown.addEventListener("click", toggleDropdown);
     });
-    
+    // Function pour mon TOGGLE
     function toggleDropdown(event) {
       console.log("J'ai cliqué");
-    
-      const dropdown = event.currentTarget;
-      const dropdownContent = dropdown?.querySelector(".dropdown-content");
-      const dropdownArrows = dropdown?.querySelectorAll(".dropdown-arrow");
+      
+      const dropdown = event.currentTarget; // Chaque dropdown est composé de l'évènement de sa cible actuelle
+      const dropdownContent = dropdown?.querySelector(".dropdown-content"); // S'il existe, je selectionne mon .dropdown-content
+      const dropdownArrows = dropdown?.querySelectorAll(".dropdown-arrow");// S'il existe, je selectionne mon .dropdown-arrow
     
       if (dropdownContent) {
-        dropdownContent.classList.toggle("show");
+        dropdownContent.classList.toggle("show"); // SI je passe dans dropdownContent alors je lui ajoute la class show
       }
     
-      if (dropdownArrows) {
-        dropdownArrows.forEach((arrow) => {
-          arrow.classList.toggle("opened");
+      if (dropdownArrows) { // SI je passe dans dropdownArrows
+        dropdownArrows.forEach((arrow) => { // ALORS pour toutes mes arrow 
+          arrow.classList.toggle("opened"); // je lui ajoute la class "opened"
         });
       }
     
-      if (dropdownContent?.classList.contains("show")) {
-        const dropdownListScrollable = dropdownContent.querySelector(".dropdown-list-scrollable");
-        const maxHeight = window.innerHeight - dropdownContent.getBoundingClientRect().top - 20;
-        dropdownListScrollable.style.maxHeight = maxHeight + "px";
+      if (dropdownContent?.classList.contains("show")) { // SI dropdownContent EXISTE et qu'il contient la class "show"
+         // Vérifie si la classe "show" est présente dans la liste des classes de dropdownContent
+        // L'opérateur ?. permet de s'assurer que dropdownContent est défini avant d'accéder à ses propriétés
+        const dropdownListScrollable = dropdownContent.querySelector(".dropdown-list-scrollable"); // Récupère l'élément avec la classe "dropdown-list-scrollable" à l'intérieur de dropdownContent
+        const maxHeight = window.innerHeight - dropdownContent.getBoundingClientRect().top - 20; // Calcule la hauteur maximale pour dropdownListScrollable en fonction de la position de dropdownContent dans la fenêtre
+        dropdownListScrollable.style.maxHeight = maxHeight + "px"; // Définit la hauteur maximale de dropdownListScrollable en utilisant la valeur calculée
       }
     }
     
     
-
+    // Function qui filtre mes recettes
     function filterRecipes() {
       console.log('je passe dans ma fonction filterRecipes');
       const dropdowns = document.querySelectorAll(".dropdown");
