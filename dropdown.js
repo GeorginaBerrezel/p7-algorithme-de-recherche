@@ -10,12 +10,15 @@ fetchRecipes()
     // J'ajoute un écouteur d'evenement pour activer le toggle de mon dropdown
     dropdowns.forEach((dropdown) => {
       dropdown.addEventListener("click", toggleDropdown);
+  
     });
     // Function pour mon TOGGLE
     function toggleDropdown(event) {
       console.log("J'ai cliqué");
       
-      const dropdown = event.currentTarget; // Chaque dropdown est composé de l'évènement de sa cible actuelle
+      let dropdown = event.target.parentNode; // Chaque dropdown est composé de l'évènement de sa cible actuelle
+          // IF .classList.contains (dropdown-arrow) dropdow = dropdown.parentNode  
+      console.log(dropdown);
       const dropdownContent = dropdown?.querySelector(".dropdown-content"); // S'il existe, je selectionne mon .dropdown-content
       const dropdownArrows = dropdown?.querySelectorAll(".dropdown-arrow");// S'il existe, je selectionne mon .dropdown-arrow
     
@@ -190,7 +193,6 @@ console.log(newOption);
 
 
     function addTag(tagText, dropdownId) {
-      console.log(addTag);
       console.log('je passe dans ma fonction addTag')
 
       const tagsContainer = document.querySelector("#tags-container");
@@ -219,13 +221,15 @@ console.log(newOption);
 
       tagsContainer.appendChild(tag);
 
-      toggleDropdown();
+      // toggleDropdown();
 
 
       // cette fonction permet de faire le tri grace aux filtres selectionnées
       filterRecipesByTags();
       // le bug: c'est comme si la fonction "filterRecipesByTags()" ne se lance jamais
       // et verifier comment la fonction sais quelles tags à été selectionnés ?
+
+      // Utiliser la fonction de recherche habituelle, avec les tags selectionnés
 
     }
 

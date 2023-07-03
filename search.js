@@ -13,7 +13,7 @@ searchInput.addEventListener("input", function() {
 function searchRecipes(query) {
   query = query.toLowerCase();
   const matchingRecipes = [];
-
+// méthode plus lourde "for"
   recipes.forEach((recipe) => {
     const { name, ingredients, appliance, ustensils } = recipe;
 
@@ -61,3 +61,6 @@ function updateDropdowns(query) {
     });
   });
 }
+
+// fonction qui recupère dans les resultats actuelle les 3 groupes de tags
+// prend en paramètre mes resultats actuelles et que j'appelle à chaque ajout ou suppression d'un tag dans une recherche vi l'input ou les tags
