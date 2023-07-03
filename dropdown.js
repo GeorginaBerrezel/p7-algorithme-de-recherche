@@ -138,11 +138,17 @@ fetchRecipes()
     }
 
     function createSelectOptions(selectElement, options) {
+
+      console.log(options);
+     
       selectElement.innerHTML = "";
 
       options.forEach((option) => {
         const newOption = document.createElement("li");
         newOption.textContent = option;
+
+console.log(newOption);
+
         newOption.addEventListener("click", function () {
           addTag(option, selectElement.id);
         });
@@ -184,9 +190,11 @@ fetchRecipes()
 
 
     function addTag(tagText, dropdownId) {
+      console.log(addTag);
       console.log('je passe dans ma fonction addTag')
 
       const tagsContainer = document.querySelector("#tags-container");
+
 
       const tag = document.createElement("div");
       tag.classList.add("tag");
@@ -213,7 +221,12 @@ fetchRecipes()
 
       toggleDropdown();
 
+
+      // cette fonction permet de faire le tri grace aux filtres selectionnées
       filterRecipesByTags();
+      // le bug: c'est comme si la fonction "filterRecipesByTags()" ne se lance jamais
+      // et verifier comment la fonction sais quelles tags à été selectionnés ?
+
     }
 
     function removeTag(tag, dropdownId) {
@@ -227,6 +240,8 @@ fetchRecipes()
     }
 
     function filterRecipesByTags() {
+      console.log('je passe dans ma fonction filterRecipesByTags');
+
       const selectedTags = Array.from(
         document.querySelectorAll("#tags-container .tag .content")
       );
@@ -239,12 +254,18 @@ fetchRecipes()
         const tagName = tag.textContent.toLowerCase();
         console.log(tag.parentNode.classList);
         console.log(tagName);
+
+        // c'est ici que le filtre de tri, vérifie si les ingredients/appareils/ustensils
         if (tag.parentNode.classList.contains("ingredients")) {
           console.log('toto');
           selectedIngredients.push(tagName);
         } else if (tag.parentNode.classList.contains("appareils")) {
+          console.log('tata');
+
           selectedAppliances.push(tagName);
         } else if (tag.parentNode.classList.contains("ustensils")) {
+          console.log('titi');
+
           selectedUtensils.push(tagName);
         }
       });
