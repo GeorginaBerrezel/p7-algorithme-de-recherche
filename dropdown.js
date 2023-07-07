@@ -1,4 +1,7 @@
 import { fetchRecipes } from "./data.js";
+// recuoérer que les recettes filtré
+// pleine par défault et la faire evoluer
+// console.log pour voir si j'ai bien une liste trié
 
 fetchRecipes()
   .then((recipes) => {
