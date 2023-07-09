@@ -13,7 +13,7 @@ searchInput.addEventListener("input", function() {
 function searchRecipes(query) {
   query = query.toLowerCase();
   const matchingRecipes = [];
-// méthode plus lourde "for"
+  // méthode plus lourde "for"
   recipes.forEach((recipe) => {
     const { name, ingredients, appliance, ustensils } = recipe;
 

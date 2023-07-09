@@ -5,8 +5,8 @@ import { fetchRecipes } from "./data.js";
 
 fetchRecipes()
   .then((recipes) => {
-    // Affichage de toutes mes recettes
-    console.log(recipes);
+    // Affichage de toutes mes recettes yo !
+    // console.log(recipes);
     // Selection de toutes mes class .dropdown
     const dropdowns = document.querySelectorAll(".dropdown");
     // Boucle sur chacun de mes dropdown via ma constante dropdownS
@@ -17,7 +17,7 @@ fetchRecipes()
     });
     // Function pour mon TOGGLE
     function toggleDropdown(event) {
-      console.log("J'ai cliqué");
+      // console.log("J'ai cliqué");
       
       let dropdown = event.target.parentNode; // Chaque dropdown est composé de l'évènement de sa cible actuelle
           // IF .classList.contains (dropdown-arrow) dropdow = dropdown.parentNode  
@@ -47,17 +47,19 @@ fetchRecipes()
     
     // Function qui filtre mes recettes
     function filterRecipes() {
-      console.log('je passe dans ma fonction filterRecipes');
+      // console.log('je passe dans ma fonction filterRecipes');
       const dropdowns = document.querySelectorAll(".dropdown");
 
       dropdowns.forEach((dropdown) => {
-        const dropdownContent = dropdown.querySelector(".dropdown-content");
+        // const dropdownContent = dropdown.querySelector(".dropdown-content");
         const searchInputDropdown = dropdown.querySelector(
           ".search-input-dropdown"
         );
         const dropdownList = dropdown.querySelector(".dropdown-list");
         const searchValue = searchInputDropdown.value.toLowerCase();
         const items = Array.from(dropdownList.getElementsByTagName("li"));
+
+        // Display les li des items
 
         items.forEach(function (item) {
           const text = item.innerText.toLowerCase();
@@ -93,74 +95,28 @@ fetchRecipes()
       input.addEventListener("input", filterRecipes);
     });
 
-    function getSelectedTags() {
-      console.log(getSelectedTags);
-      const selectedTags = Array.from(
-        document.querySelectorAll("#tags-container .tag .content")
-      ).map((tag) => tag.innerText.toLowerCase());
-      return selectedTags;
-    }
 
-    function getTagsForRecipe(recipeId) {
-      const recipe = recipes.find((recipe) => recipe.id === recipeId);
-      if (recipe) {
-        const { ingredients, appliance, ustensils } = recipe;
-        const tags = [
-          appliance.toLowerCase(),
-          ...ingredients.map((ingredient) =>
-            ingredient.ingredient.toLowerCase()
-          ),
-          ...ustensils.map((utensil) => utensil.toLowerCase()),
-        ];
-        return tags;
-      }
-      return [];
-    }
-
-    function hasAllSelectedTags(cardTags, selectedTags) {
-      return selectedTags.every((tag) => cardTags.includes(tag));
-    }
-
-    function searchRecipes(query) {
-      const matchingRecipes = recipes.reduce((acc, recipe) => {
-        const { name, description, ingredients, appliance, ustensils } = recipe;
-        const recipeTags = [
-          name.toLowerCase(),
-          description.toLowerCase(),
-          appliance.toLowerCase(),
-          ...ingredients.map((ingredient) =>
-            ingredient.ingredient.toLowerCase()
-          ),
-          ...ustensils.map((utensil) => utensil.toLowerCase()),
-        ];
-
-        if (recipeTags.some((tag) => tag.includes(query))) {
-          acc.push(recipe.id);
-        }
-        return acc;
-      }, []);
-
-      return matchingRecipes;
-    }
-
+    //fonction qui créer les li dans mon dropdown-content
     function createSelectOptions(selectElement, options) {
 
-      console.log(options);
+      // console.log(options);
      
       selectElement.innerHTML = "";
+      // console.log('toto', selectElement);
 
       options.forEach((option) => {
         const newOption = document.createElement("li");
         newOption.textContent = option;
 
-console.log(newOption);
+        // console.log(newOption);
 
         newOption.addEventListener("click", function () {
-          addTag(option, selectElement.id);
+          addTag(option, selectElement.id); // select element correspond à un de mes ingrédients qui se trouve dans un li
         });
         selectElement.appendChild(newOption);
       });
     }
+    // // Les li sont ensnuite ajouté dans mes 3 listes d'ingrédients
 
     const ingredientsList = document.querySelector("#ingredients");
     const appliancesList = document.querySelector("#appareils");
@@ -170,11 +126,13 @@ console.log(newOption);
       recipe.ingredients.forEach((ingredient) => {
         if (!acc.includes(ingredient.ingredient)) {
           acc.push(ingredient.ingredient);
+          // console.log('toto',acc);
         }
       });
       return acc;
     }, []);
     createSelectOptions(ingredientsList, ingredients);
+    // console.log(ingredients);
 
     const appliances = recipes.reduce((acc, recipe) => {
       if (!acc.includes(recipe.appliance)) {
@@ -183,6 +141,8 @@ console.log(newOption);
       return acc;
     }, []);
     createSelectOptions(appliancesList, appliances);
+    // console.log(appliances);
+
 
     const utensils = recipes.reduce((acc, recipe) => {
       recipe.ustensils.forEach((utensil) => {
@@ -193,10 +153,12 @@ console.log(newOption);
       return acc;
     }, []);
     createSelectOptions(utensilsList, utensils);
+    // console.log(utensils);
 
+    // console.log(ingredientsList, appliancesList, utensilsList);
 
     function addTag(tagText, dropdownId) {
-      console.log('je passe dans ma fonction addTag')
+      // console.log('je passe dans ma fonction addTag')
 
       const tagsContainer = document.querySelector("#tags-container");
 
@@ -247,58 +209,83 @@ console.log(newOption);
     }
 
     function filterRecipesByTags() {
-      console.log('je passe dans ma fonction filterRecipesByTags');
+      // console.log('je passe dans ma fonction filterRecipesByTags');
 
       const selectedTags = Array.from(
         document.querySelectorAll("#tags-container .tag .content")
       );
-      console.log(selectedTags);
+      // console.log(selectedTags);
       const selectedIngredients = [];
       const selectedAppliances = [];
-      const selectedUtensils = [];
+      const selectedUstensils = [];
 
       selectedTags.forEach((tag) => {
         const tagName = tag.textContent.toLowerCase();
-        console.log(tag.parentNode.classList);
-        console.log(tagName);
+        // console.log(tag.parentNode.classList);
+        // console.log(tagName);
 
         // c'est ici que le filtre de tri, vérifie si les ingredients/appareils/ustensils
         if (tag.parentNode.classList.contains("ingredients")) {
-          console.log('toto');
+          // console.log('toto');
           selectedIngredients.push(tagName);
         } else if (tag.parentNode.classList.contains("appareils")) {
-          console.log('tata');
+          // console.log('tata');
 
           selectedAppliances.push(tagName);
         } else if (tag.parentNode.classList.contains("ustensils")) {
-          console.log('titi');
+          // console.log('titi');
 
-          selectedUtensils.push(tagName);
+          selectedUstensils.push(tagName);
         }
       });
 
       recipes.forEach((recipe) => {
+    
+
         const { id } = recipe;
         const cardContainer = document.querySelector(
           `#card-container .col[data-recipe-id="${id}"]`
         );
+        // console.log(cardContainer);
+
         const shouldDisplay = checkRecipeTags(
           recipe,
           selectedIngredients,
           selectedAppliances,
-          selectedUtensils
+          selectedUstensils
         );
+        // console.log(shouldDisplay);
+
 
         if (cardContainer) {
+          
           cardContainer.style.display = shouldDisplay ? "block" : "none";
+         
+          // console.log('wesh wesh',cards);
+          // console.log(`Nombre de cartes : ${numberOfCards}`);
+
         }
+
       });
+
+      const searchCounter = document.createElement('div');
+      searchCounter.classList.add('search-counter');
+      document.querySelector('.search-counter').appendChild(searchCounter);
+      
+      function updateSearchCounter(numberOfCards) {
+        searchCounter.textContent = `${numberOfCards} RECETTES`;
+      }
+
+      const cards = document.querySelectorAll('.col[style*="display: block"]');
+      const numberOfCards = cards.length;
+      updateSearchCounter(numberOfCards);
+
     }
 
     function verifierPresence(selectedTagsText, recipeContent) {
-      console.log('je passe dans ma fonction verifierPresence');
-      console.log(selectedTagsText);
-      console.log(recipeContent);
+      // console.log('je passe dans ma fonction verifierPresence');
+      // console.log(selectedTagsText);
+      // console.log(recipeContent);
 
       for (let i = 0; i < selectedTagsText.length; i++) {
         if (!recipeContent.includes(selectedTagsText[i])) {
@@ -312,41 +299,33 @@ console.log(newOption);
       recipe,
       selectedIngredients,
       selectedAppliances,
-      selectedUtensils
-    ) {
-      console.log('checkRecipeTags');
-      const { ingredients, appliance, ustensils } = recipe;
-
+      selectedUstensils
+    ) { 
+      // console.log('checkRecipeTags');
+      const { ingredients, appliances, ustensils } = recipe;
+      // console.log(recipe);
       if (selectedIngredients.length > 0) {
         const recipeIngredients = ingredients.map((ingredient) =>
           ingredient.ingredient.toLowerCase()
         );
-        console.log(selectedIngredients);
-        console.log(verifierPresence(selectedIngredients, recipeIngredients));
         return verifierPresence(selectedIngredients, recipeIngredients);
+
       }
 
-      if (
-        selectedAppliances.length > 0 &&
-        !selectedAppliances.includes(appliance.toLowerCase())
-      ) {
-        return false;
+      if (selectedAppliances.length > 0) {
+        console.log(appliances);
+        return verifierPresence(selectedAppliances, recipeAppliances);
       }
+      
 
-      if (selectedUtensils.length > 0) {
-        const recipeUtensils = ustensils.map((utensil) =>
-          utensil.toLowerCase()
+      if (selectedUstensils.length > 0) {
+        const recipeUtensils = ustensils.map((ustensil) =>
+        ustensil.ustensil.toLowerCase()
         );
-        const hasAllUtensils = selectedUtensils.every((utensil) =>
-          recipeUtensils.includes(utensil)
-        );
-
-        if (!hasAllUtensils) {
-          return false;
-        }
+        return verifierPresence(selectedUstensils, recipeUtensils);
       }
 
-      return true;
+      // return true;
     }
 
     // Le bloc de code suivant est ajouté ici pour compléter le script
@@ -369,3 +348,6 @@ console.log(newOption);
       error
     );
   });
+
+
+
